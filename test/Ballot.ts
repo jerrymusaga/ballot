@@ -1,3 +1,4 @@
+import { expect } from "chai";
 import { ethers } from "hardhat"
 import { Ballot } from "../typechain-types";
 
@@ -29,7 +30,10 @@ describe("Ballot", function (){
     })
 
     it("assigns chairman to be the deployer of contract", async function(){
-
+        const signers = await ethers.getSigners();
+        const signer = signers[0].address;
+        const deployer = await ballotContract.chairperson();
+        expect(signer).to.eq(deployer)
     })
 
 

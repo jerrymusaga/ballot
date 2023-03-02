@@ -42,5 +42,19 @@ describe("Ballot", function (){
         expect(signer).to.eq(deployer)
     })
 
+    it("has zero vote count for each proposal", async function (){
+        for (let i = 0; i < PROPOSALS.length; i++){
+            const proposals = await ballotContract.proposals(i);
+            expect(proposals.voteCount).to.eq(0);
+        }
+    })
+
+    it("expect chairperson weight to be 1", async function (){
+        const chairperson = await ballotContract.chairperson();
+        const chairpersonVoter = await ballotContract.voters(chairperson);
+        const weight = chairpersonVoter.weight;
+        expect(weight).to.eq(1);
+    })
+
 
 })

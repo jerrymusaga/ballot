@@ -26,6 +26,12 @@ describe("Ballot", function (){
     })
 
     it("has all the provided proposals", async function () {
+        
+        for (let i = 0; i < PROPOSALS.length; i++){
+            const proposals = await ballotContract.proposals(i);
+            expect(ethers.utils.parseBytes32String(proposals.name)).to.eq(PROPOSALS[i]);
+        }
+        
 
     })
 

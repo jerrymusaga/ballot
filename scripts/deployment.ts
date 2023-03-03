@@ -1,4 +1,6 @@
 import { ethers } from "ethers";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 const PROPOSALS = ["Proposal 1", "Proposal 2", "Proposal 3"];
 
@@ -21,15 +23,22 @@ async function main(){
 
     const provider = ethers.getDefaultProvider("goerli") ;
     console.log({provider})
-    const lastBlock = await provider.getBlock("latest");
-    console.log({lastBlock})
-
+    
+    //use existing wallet using mnemonic keys
+    const mnemonic = process.env.MNEMONIC ;
+    if (!mnemonic || mnemonic.length == 0) throw new Error("Missing Environment: mnemonics");
+    const wallet = ethers.Wallet.fromMnemonic(mnemonic);
+    console.log(`wallet account address is: ${wallet.address}`);
+  
+    /* 
     //create a new random wallet
     const wallet = ethers.Wallet.createRandom();
     console.log(`wallet account address is: ${wallet.address}`);
     const signer = wallet.connect(provider);
     const signerBalance = await signer.getBalance();
     console.log(`Balance of signer is ${signerBalance} wei`);
+
+    */
 
     
     

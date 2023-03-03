@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import * as dotenv from "dotenv";
+import { Ballot__factory } from "../typechain-types";
 dotenv.config();
 
 const PROPOSALS = ["Proposal 1", "Proposal 2", "Proposal 3"];
@@ -21,7 +22,7 @@ async function main(){
 
     if(proposals.length <= 0) throw new Error("Need one or more arguments");
 
-    const provider = ethers.getDefaultProvider("goerli") ;
+    const provider = new ethers.providers.AlchemyProvider("goerli", process.env.ALCHEMY_API_KEY) ;
     console.log({provider})
 
     //use existing wallet using private key
@@ -55,20 +56,19 @@ async function main(){
     */
 
     
-    
-    // return;
 
-    // console.log("Deploying Ballot Contract");
-    // console.log("Proposals")
+    console.log("Deploying Ballot Contract");
+    console.log("Proposals")
+    proposals.forEach((element, index) => {
+        console.log(`Proposal Index ${index + 1}: ${element}`);
+    })
 
-    // proposals.forEach((element, index) => {
-    //     console.log(`Proposal Index ${index + 1}: ${element}`);
-    // })
-
-    // const ballotContractFactory = await ethers.getContractFactory("Ballot");
-    // const ballotContract = await ballotContractFactory.deploy(convertStringArrayToByte32(PROPOSALS));
-    // await ballotContract.deployTransaction.wait();
-    // console.log(`ballot deployed to address: ${ballotContract.address}` )
+    const ballotContractFactory = new Ballot__factory(signer);
+    console.log("Deploying contract...")
+    const ballotContract = await ballotContractFactory.deploy(convertStringArrayToByte32(PROPOSALS));
+    const deployTxnReceipt = await ballotContract.deployTransaction.wait();
+    console.log(`ballot deployed to address: ${ballotContract.address}` )
+    console.log({deployTxnReceipt})
 
 
     

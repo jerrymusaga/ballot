@@ -13,11 +13,17 @@ function convertStringArrayToByte32(array: string[]) {
 
 
 async function main(){
+
+    const args = process.argv;
+    const proposals = args.splice(2);
+
+    if(proposals.length <= 0) throw new Error("Need one or more arguments");
+
     console.log("Deploying Ballot Contract");
     console.log("Proposals")
 
-    PROPOSALS.forEach((element, index) => {
-        console.log(`Proposal Index ${index}: ${element}`);
+    proposals.forEach((element, index) => {
+        console.log(`Proposal Index ${index + 1}: ${element}`);
     })
 
     const ballotContractFactory = await ethers.getContractFactory("Ballot");

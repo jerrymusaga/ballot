@@ -1,4 +1,4 @@
-import { ethers } from "hardhat";
+import { ethers } from "ethers";
 
 const PROPOSALS = ["Proposal 1", "Proposal 2", "Proposal 3"];
 
@@ -19,17 +19,33 @@ async function main(){
 
     if(proposals.length <= 0) throw new Error("Need one or more arguments");
 
-    console.log("Deploying Ballot Contract");
-    console.log("Proposals")
+    const provider = ethers.getDefaultProvider("goerli") ;
+    console.log({provider})
+    const lastBlock = await provider.getBlock("latest");
+    console.log({lastBlock})
 
-    proposals.forEach((element, index) => {
-        console.log(`Proposal Index ${index + 1}: ${element}`);
-    })
+    //create a new random wallet
+    const wallet = ethers.Wallet.createRandom();
+    console.log(`wallet account address is: ${wallet.address}`);
+    const signer = wallet.connect(provider);
+    const signerBalance = await signer.getBalance();
+    console.log(`Balance of signer is ${signerBalance} wei`);
 
-    const ballotContractFactory = await ethers.getContractFactory("Ballot");
-    const ballotContract = await ballotContractFactory.deploy(convertStringArrayToByte32(PROPOSALS));
-    await ballotContract.deployTransaction.wait();
-    console.log(`ballot deployed to address: ${ballotContract.address}` )
+    
+    
+    // return;
+
+    // console.log("Deploying Ballot Contract");
+    // console.log("Proposals")
+
+    // proposals.forEach((element, index) => {
+    //     console.log(`Proposal Index ${index + 1}: ${element}`);
+    // })
+
+    // const ballotContractFactory = await ethers.getContractFactory("Ballot");
+    // const ballotContract = await ballotContractFactory.deploy(convertStringArrayToByte32(PROPOSALS));
+    // await ballotContract.deployTransaction.wait();
+    // console.log(`ballot deployed to address: ${ballotContract.address}` )
 
 
     

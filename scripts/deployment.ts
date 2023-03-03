@@ -23,12 +23,27 @@ async function main(){
 
     const provider = ethers.getDefaultProvider("goerli") ;
     console.log({provider})
+
+    //use existing wallet using private key
+    const private_key = process.env.PRIVATE_KEY ;
+    if(!private_key || private_key.length == 0) throw new Error("Missing environment: private key");
+    const wallet = new ethers.Wallet(private_key);
+    console.log(`wallet account address is: ${wallet.address}`);
+    const signer = wallet.connect(provider);
+    const signerBalance = await signer.getBalance();
+    console.log(`Balance of signer is ${signerBalance} wei`)
+
     
+    /*
     //use existing wallet using mnemonic keys
     const mnemonic = process.env.MNEMONIC ;
     if (!mnemonic || mnemonic.length == 0) throw new Error("Missing Environment: mnemonics");
     const wallet = ethers.Wallet.fromMnemonic(mnemonic);
     console.log(`wallet account address is: ${wallet.address}`);
+    const signer = wallet.connect(provider);
+    const signerBalance = await signer.getBalance();
+    console.log(`Balance of signer is ${signerBalance} wei`)
+    */
   
     /* 
     //create a new random wallet
@@ -37,7 +52,6 @@ async function main(){
     const signer = wallet.connect(provider);
     const signerBalance = await signer.getBalance();
     console.log(`Balance of signer is ${signerBalance} wei`);
-
     */
 
     
